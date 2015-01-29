@@ -1,0 +1,8 @@
+{
+  "name"        : "react-project-structure",
+  "version"     : "0.0.1-alpha.1",
+  "dependencies": {
+    "jquery": "~2.1.3"
+  },
+  "private"     : true
+}
