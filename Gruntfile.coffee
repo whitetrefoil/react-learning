@@ -15,6 +15,8 @@ module.exports = (grunt) ->
           cleanup  : false
 
     replace:
+      options:
+        usePrefix: false
       cjsx:
         files  : [
           expand: true
@@ -25,10 +27,10 @@ module.exports = (grunt) ->
         options:
           patterns: [
             match      : '\'\'\'#'
-            replacement: '('
+            replacement: ''
           ,
             match      : '#\'\'\''
-            replacement: ')'
+            replacement: ''
           ,
             match      : '\'#<'
             replacement: '<'
@@ -187,7 +189,7 @@ module.exports = (grunt) ->
 
 
   grunt.registerTask 'preServer',
-                     ['copy:bootstrap', 'compass:server', 'replace:cjsx', 'browserify:server']
+                     ['copy:bootstrap', 'compass:server', 'replace:cjsx', 'copy:cjsx', 'browserify:server']
 
   # preCompile: compile the files to optimize
   grunt.registerTask 'preCompile',
