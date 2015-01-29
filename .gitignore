@@ -12,6 +12,7 @@ data/
 .server/
 .tmp/
 .building/
+.cjsx-cache/
 dist/
 bower_components/
 src/lib/
