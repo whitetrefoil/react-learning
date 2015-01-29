@@ -14,6 +14,18 @@ module.exports = (grunt) ->
           copy     : false
           cleanup  : false
 
+    replace:
+      cjsx:
+        src: ['src/js/**/*.cjsx']
+        dest: ['.cjsx-cache/']
+        replacements: [
+          from: '\'#<'
+          to: '<'
+        ,
+          from: '>#\''
+          to: '>'
+        ]
+
     browserify:
       options :
         transform        : ['coffee-reactify', require('grunt-react').browserify]
@@ -21,14 +33,14 @@ module.exports = (grunt) ->
           extensions: ['.coffee', '.litcoffee', '.jsx', '.cjsx']
       server  :
         files  : [
-          src : ['src/js/**/*.+(js|coffee|litcoffee|jsx|cjsx)']
+          src : ['src/js/**/*.+(js|coffee|litcoffee|jsx)', '.cjsx-cache/**/*.cjsx']
           dest: '.server/js/bundle.js'
         ]
         options:
           watch: true
       building:
         files: [
-          src : ['src/js/**/*.+(js|coffee|litcoffee|jsx|cjsx)']
+          src : ['src/js/**/*.+(js|coffee|litcoffee|jsx)', '.cjsx-cache/**/*.cjsx']
           dest: '.building/js/bundle.js'
         ]
 
@@ -36,7 +48,7 @@ module.exports = (grunt) ->
       dist    : ['dist']
       server  : ['.server']
       building: ['.building', '.tmp']
-      cache   : ['.sass-cache']
+      cache   : ['.sass-cache', '.cjsx-cache']
 
     compass:
       options :
@@ -142,11 +154,11 @@ module.exports = (grunt) ->
 
 
   grunt.registerTask 'preServer',
-                     ['copy:bootstrap', 'compass:server', 'browserify:server']
+                     ['copy:bootstrap', 'compass:server', 'replace:cjsx', 'browserify:server']
 
   # preCompile: compile the files to optimize
   grunt.registerTask 'preCompile',
-                     ['copy:building', 'copy:dist', 'browserify:building', 'compass:building']
+                     ['copy:building', 'copy:dist', 'replace:cjsx', 'browserify:building', 'compass:building']
 
   grunt.registerTask 'compile', 'Compile & optimize the codes',
                      ['preCompile', 'optimize']
