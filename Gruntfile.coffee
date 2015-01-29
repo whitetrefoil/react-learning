@@ -39,19 +39,17 @@ module.exports = (grunt) ->
       cache   : ['.sass-cache']
 
     compass:
-      dist  :
+      options :
+        sassDir    : 'src/css'
+        outputStyle: 'expanded'
+        bundleExec : true
+      building:
         options:
-          sassDir    : 'src/css'
-          cssDir     : 'dist/css'
+          cssDir     : '.building/css'
           environment: 'production'
-          outputStyle: 'compressed'
-          bundleExec : true
-      server:
+      server  :
         options:
-          sassDir    : 'src/css'
-          cssDir     : '.server/css'
-          outputStyle: 'expanded'
-          bundleExec : true
+          cssDir: '.server/css'
 
     connect:
       options:
@@ -148,14 +146,15 @@ module.exports = (grunt) ->
 
   # preCompile: compile the files to optimize
   grunt.registerTask 'preCompile',
-                     ['copy:building', 'copy:dist', 'browserify:building', 'compass:dist']
+                     ['copy:building', 'copy:dist', 'browserify:building', 'compass:building']
 
   grunt.registerTask 'compile', 'Compile & optimize the codes',
                      ['preCompile', 'optimize']
 
   grunt.registerTask 'optimize', 'Optimize JS files',
-                     ['useminPrepare', 'copy:usemin', 'concat:generated'
-                      'uglify:generated', 'filerev', 'usemin', 'htmlmin']
+                     ['useminPrepare', 'copy:usemin',
+                      'concat:generated', 'cssmin:generated', 'uglify:generated', 'filerev',
+                      'usemin', 'htmlmin']
 
   grunt.registerTask 'build', 'Build the code for production',
                      ['bower:install', 'clean:dist', 'clean:server', 'copy:bootstrap'
