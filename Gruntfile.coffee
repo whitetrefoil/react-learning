@@ -14,41 +14,16 @@ module.exports = (grunt) ->
           copy     : false
           cleanup  : false
 
-    replace:
-      options:
-        usePrefix: false
-      cjsx:
-        files  : [
-          expand: true
-          cwd   : 'src'
-          src   : ['js/**/*.cjsx', '!lib/**/*']
-          dest  : '.cjsx-cache/'
-        ]
-        options:
-          patterns: [
-            match      : '\'\'\'#'
-            replacement: ''
-          ,
-            match      : '#\'\'\''
-            replacement: ''
-          ,
-            match      : '\'#<'
-            replacement: '<'
-          ,
-            match      : '>#\''
-            replacement: '>'
-          ]
-
     browserify:
       options :
-        transform        : ['coffee-reactify', require('grunt-react').browserify]
+        transform        : [require('grunt-react').browserify]
         browserifyOptions:
-          extensions: ['.coffee', '.litcoffee', '.jsx', '.cjsx']
+          extensions: ['.jsx', '.js']
       server  :
         files  : [
           expand: true
-          cwd: '.cjsx-cache'
-          src : ['js/*.+(cjsx|js|coffee|litcoffee|jsx)']
+          cwd: 'src'
+          src : ['js/*.{js,jsx}']
           dest: '.server/'
           extDot: 'last'
           ext: '.js'
@@ -58,8 +33,8 @@ module.exports = (grunt) ->
       building:
         files: [
           expand: true
-          cwd: '.cjsx-cache'
-          src : ['**/*.+(cjsx|js|coffee|litcoffee|jsx)']
+          cwd: 'src'
+          src : ['js/*.{js,jsx}']
           dest: '.building/'
           extDot: 'last'
           ext: '.js'
@@ -69,7 +44,7 @@ module.exports = (grunt) ->
       dist    : ['dist']
       server  : ['.server']
       building: ['.building', '.tmp']
-      cache   : ['.sass-cache', '.cjsx-cache']
+      cache   : ['.sass-cache']
 
     compass:
       options :
@@ -99,14 +74,6 @@ module.exports = (grunt) ->
           cwd   : 'src/lib/bootstrap-sass-official/assets/fonts'
           src   : ['bootstrap/**/*']
           dest  : 'src/fonts/'
-        ]
-      cjsx:
-        files: [
-          expand: true
-          cwd   : 'src'
-          src   : ['**/*.+(coffee|litcoffee|js|jsx)', '!lib/**/*']
-          filter: 'isFile'
-          dest  : '.cjsx-cache/'
         ]
       dist     :
         files: [
@@ -163,12 +130,6 @@ module.exports = (grunt) ->
         files: 'src/**/*.html'
       css     :
         files: 'src/**/*.css'
-      cjsx    :
-        files: 'src/**/*.cjsx'
-        tasks: 'replace:cjsx'
-      jsSource:
-        files: 'src/**/*.+(coffee|litcoffee|js|jsx)'
-        tasks: 'copy:cjsx'
 
     filerev:
       dist:
@@ -189,12 +150,11 @@ module.exports = (grunt) ->
 
 
   grunt.registerTask 'preServer',
-                     ['copy:bootstrap', 'compass:server', 'replace:cjsx', 'copy:cjsx', 'browserify:server']
+                     ['copy:bootstrap', 'compass:server', 'browserify:server']
 
   # preCompile: compile the files to optimize
   grunt.registerTask 'preCompile',
-                     ['copy:building', 'copy:dist', 'copy:cjsx', 'replace:cjsx',
-                      'browserify:building', 'compass:building']
+                     ['copy:building', 'copy:dist', 'browserify:building', 'compass:building']
 
   grunt.registerTask 'compile', 'Compile & optimize the codes',
                      ['preCompile', 'optimize']
