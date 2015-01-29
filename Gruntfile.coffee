@@ -19,6 +19,12 @@ module.exports = (grunt) ->
         src: ['src/js/**/*.cjsx']
         dest: ['.cjsx-cache/']
         replacements: [
+          from: '\'\'\'#'
+          to: '('
+        ,
+          from: '#\'\'\''
+          to: ')'
+        ,
           from: '\'#<'
           to: '<'
         ,
@@ -134,6 +140,9 @@ module.exports = (grunt) ->
         files: 'src/**/*.html'
       css    :
         files: 'src/**/*.css'
+      cjsx   :
+        files: 'src/**/*.cjsx'
+        tasks: 'replace:cjsx'
 
     filerev:
       dist:
