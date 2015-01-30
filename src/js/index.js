@@ -1,5 +1,15 @@
-(function(React) {
+(function(React, ReactRouter) {
   'use strict';
 
-  console.log(React);
-})(window.React);
+  var routes = require('./routes/indexRoutes');
+
+  ReactRouter.run(routes, function(Handler) {
+    React.render(
+      /*jshint ignore:start */
+      <Handler />
+      , document.body
+      /*jshint ignore:end */
+    );
+  });
+
+})(window.React, window.ReactRouter);
