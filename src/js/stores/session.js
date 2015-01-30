@@ -51,8 +51,12 @@ var SessionStore = Reflux.createStore({
     console.log('Logout: ', arguments);
   },
 
-  onGetUserInfo: function() {
-    console.log(this.data);
+  getSession: function() {
+    return this.data;
+  },
+
+  getToken: function() {
+    return this.data.token;
   }
 });
 
