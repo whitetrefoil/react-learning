@@ -1,6 +1,8 @@
 (function(React, ReactRouter) {
   'use strict';
 
+  require('./stores/session');
+
   var routes = require('./routes/indexRoutes');
 
   ReactRouter.run(routes, function(Handler) {

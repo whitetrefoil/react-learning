@@ -11,6 +11,7 @@ var MainNav = React.createClass({
       <Nav bsStyle="pills">
         <NavItemLink to="home">Home</NavItemLink>
         <NavItemLink to="about">About</NavItemLink>
+        <NavItemLink to="login">Login</NavItemLink>
         <NavItem disabled={true}>TBD</NavItem>
       </Nav>
       /*jshint ignore:end */
